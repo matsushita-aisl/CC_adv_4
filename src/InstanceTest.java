@@ -6,7 +6,6 @@ import java.util.Scanner;
 public class InstanceTest {
 	
 	public static void main(String[] args){
-		Scanner scan = new Scanner(System.in);
 		ArrayList<Employee> Roster = new ArrayList<Employee>();
 		Roster.add(new Employee(1, 20, "田中　太郎"));
 		Roster.add(new Employee(2, 40, "鈴木　二郎"));
@@ -17,53 +16,55 @@ public class InstanceTest {
 		Roster.add(new Employee(7, 30, "和田　花"));
 		Roster.add(new Employee(8, 28, "山崎　連"));
 		Roster.add(new Employee(9, 33, "三浦　一美"));
-		Collections.shuffle(Roster);
+		Collections.shuffle(Roster);	//とりあえずシャッフルしておく
 		
 		mainloop: while(true){
 			System.out.print("ソートする基準を選んで下さい[1:社員番号(昇順), 2:社員名(昇順), 3:年齢(降順), 9:終了] > ");
 			
-			switch (scan.next()){
-			case "1":
-				Collections.sort(Roster, new CompById());
-				System.out.println("****\t社員番号 昇順で並べ替え\t****");
-				printRoster(Roster);
-				break;
-			case "2":
-				Collections.sort(Roster, new CompByName());
-				System.out.println("****\t社員名 昇順で並べ替え\t****");
-				printRoster(Roster);
-				break;
-			case "3":
-				Collections.sort(Roster, new CompByAge());
-				System.out.println("****\t年齢 降順で並べ替え\t****");
-				printRoster(Roster);
-				break;
-			case "9":
-				System.out.println("**** **** **** 終了します **** **** ****");
-				break mainloop;
-			default:
-				System.out.println("[Err]無効な入力です．次の半角数字を入力して下さい[1/2/3/9]");
-				continue;
+			try(Scanner scanner = new Scanner(System.in)){
+				
+				switch (scanner.next()){
+				case "1":
+					Collections.sort(Roster, new CompById());
+					System.out.println("****\t社員番号 昇順で並べ替え\t****");
+					printRoster(Roster);
+					break;
+				case "2":
+					Collections.sort(Roster, new CompByName());
+					System.out.println("****\t社員名 昇順で並べ替え\t****");
+					printRoster(Roster);
+					break;
+				case "3":
+					Collections.sort(Roster, new CompByAge());
+					System.out.println("****\t年齢 降順で並べ替え\t****");
+					printRoster(Roster);
+					break;
+				case "9":
+					System.out.println("**** **** **** 終了します **** **** ****");
+					break mainloop;
+				default:
+					System.out.println("[Err]無効な入力です．次の半角数字を入力して下さい[1/2/3/9]");
+					continue;
+				}
 			}
 		}
-		scan.close();
 	}
 	
 	
-	static void printRoster(ArrayList<Employee> r){
-		for(Employee e: r){
-			System.out.println(e.toString());
+	static void printRoster(ArrayList<Employee> employees){
+		for(Employee e: employees){
+			System.out.println(e);
 		}
 		System.out.println("****\t****\t****\t****\t****\t****\t****");
 	}
 	
 	
 	
-	static class Employee{
+	static class Employee{	//そんなに書くことが多くないのでインナークラスで書きました
 		private int id, age;
 		private String name;
 		
-		
+		//Constructor
 		public Employee(int id, int age, String name){
 			this.id = id;
 			this.age = age;
@@ -71,24 +72,23 @@ public class InstanceTest {
 		}
 		
 		
-		public int getId(){
-			return this.id;
-		}
-		
-		
-		public int getAge(){
-			return this.age;
-		}
-		
-		
-		public String getName(){
-			return this.name;
-		}
-		
 		public String toString(){
 			return "社員番号:\t" + this.id +
 					", \t社員名:\t" + this.name +
 					", \t年齢:\t " + this.age;
+		}
+		
+		//getter functions
+		public int getId(){
+			return this.id;
+		}
+		public int getAge(){
+			return this.age;
+		}
+		
+		//setter function
+		public String getName(){
+			return this.name;
 		}
 	}
 	
